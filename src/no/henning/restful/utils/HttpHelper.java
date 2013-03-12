@@ -117,6 +117,7 @@ public class HttpHelper {
 	}
 
 	public static HttpUriRequest buildHttpUriRequestFromUrlAndMethod(String url, String verb) {
+		url = url.replace(" ", "%20");
 		if (verb.equalsIgnoreCase("GET"))
 			return new HttpGet(url);
 		else if (verb.equalsIgnoreCase("POST"))

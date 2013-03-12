@@ -25,9 +25,9 @@ import no.henning.restful.service.RestService;
 import no.henning.restful.service.annotation.Url;
 
 public class GenericHelper {
-	
-	public static final String APP_VERSION_NAME = "0.5";
-	
+
+	public static final String APP_VERSION_NAME = "0.6";
+
 	/**
 	 * GET REST SERVICE
 	 */
