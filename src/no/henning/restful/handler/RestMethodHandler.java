@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.json.JSONException;
 
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.callback.Callback;
 import no.henning.restful.callback.CallbackWrapper;
 import no.henning.restful.converter.json.JsonParser;
@@ -32,19 +33,21 @@ public class RestMethodHandler implements InvocationHandler {
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] arguments) throws Throwable {
-
-		Log.d("restful", "RestMethodHandler: Getting Model associated with " + method.getName());
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "RestMethodHandler: Getting Model associated with " + method.getName());
 		Class<? extends Model> model = GenericHelper.getModelFromProxyMethod(method);
-
-		Log.d("restful", "RestMethodHandler: Getting absolute path");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "RestMethodHandler: Getting absolute path");
 		String path = ProxyHelper.getAbsolutePathFromProxyMethod(method, arguments);
-
-		Log.d("restful", "RestMethodHandler: Getting what HTTP verb to use");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "RestMethodHandler: Getting what HTTP verb to use");
 		String httpVerb = HttpHelper.getHttpRequestVerbFromProxyMethod(method);
-		Log.d("restful", "RestMethodHandler: " + httpVerb + " HTTP Verb");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "RestMethodHandler: " + httpVerb + " HTTP Verb");
 
 		String queryPath = ProxyHelper.getProxyQueryPath(method, arguments);
-		Log.d("restful", "RestMethodHandler: Full path: " + path + queryPath);
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "RestMethodHandler: Full path: " + path + queryPath);
 
 		String absolutePath = path + queryPath;
 
@@ -53,8 +56,8 @@ public class RestMethodHandler implements InvocationHandler {
 
 		if (entityObject != null) {
 			entityAsJsonString = JsonWriter.from(entityObject).toString();
-
-			Log.d("restful", "RestMethodHandler: Post body (JSON): " + entityAsJsonString);
+			if (RestfulApplication.DEBUG)
+				Log.d("restful", "RestMethodHandler: Post body (JSON): " + entityAsJsonString);
 		}
 
 		final Callback<?> callback = CallbackHelper.getCallbackArgument(arguments);
@@ -69,6 +72,7 @@ public class RestMethodHandler implements InvocationHandler {
 			public void onDone(HttpRestResponse response) {
 				if (response != null) {
 					// TODO Auto-generated method stub
+					if (RestfulApplication.DEBUG)
 					Log.d("restful", "Response: " + response.getResponse());
 
 					if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.callback.Callback;
 import no.henning.restful.converter.json.utils.JsonParserUtil;
 import no.henning.restful.converter.json.utils.TypeReference;
@@ -59,13 +60,16 @@ public class JsonParser {
 		if (jsonObject == null)
 			return null;
 
-		Log.d("restful", "Json parsing: " + jsonObject.toString());
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "Json parsing: " + jsonObject.toString());
 
-		Log.d("restful", "Json parsing: Type is " + type);
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "Json parsing: Type is " + type);
 		// Create a new instance of this type
 		T returnObj = (T) type.newInstance();
 
-		Log.d("restful", "Json parsing: Type is " + returnObj);
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "Json parsing: Type is " + returnObj);
 		// Lets populate some fields!
 		List<Field> validFields = JsonParserUtil.getJsonFieldsToPopulate(returnObj.getClass());
 
@@ -80,10 +84,10 @@ public class JsonParser {
 			Class<?> fieldClass = field.getType();
 
 			Object jsonValue = jsonObject.get(jsonFieldName);
-
-			Log.d("restful", "JsonParser: Field " + field.getName() + " - Class: " + fieldClass.getName());
-			Log.d("restful", "JsonParser: Json Value Class: " + jsonValue.getClass());
-
+			if (RestfulApplication.DEBUG) {
+				Log.d("restful", "JsonParser: Field " + field.getName() + " - Class: " + fieldClass.getName());
+				Log.d("restful", "JsonParser: Json Value Class: " + jsonValue.getClass());
+			}
 			if (jsonValue instanceof JSONObject) {
 				JsonParserUtil.castJsonObjectValue(field, returnObj, jsonValue);
 			} else if (JsonParserUtil.isJsonArray(jsonValue)) {

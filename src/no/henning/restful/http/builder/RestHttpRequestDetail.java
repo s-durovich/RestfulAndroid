@@ -18,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.util.Log;
 
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.auth.BasicAuthentication;
 import no.henning.restful.converter.json.JsonWriter;
 import no.henning.restful.model.Model;
@@ -119,8 +120,8 @@ public class RestHttpRequestDetail {
 
 		if (authString == null)
 			return;
-
-		Log.d("restful", "addBasicAuthentication: This request has been set to include authentication..");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "addBasicAuthentication: This request has been set to include authentication..");
 		request.setHeader("Authorization", "Basic " + authString);
 	}
 

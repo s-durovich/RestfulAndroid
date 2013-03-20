@@ -6,6 +6,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.json.JSONException;
 
 import android.util.Log;
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.callback.Callback;
 import no.henning.restful.converter.json.JsonParser;
 import no.henning.restful.converter.json.JsonWriter;
@@ -102,14 +103,18 @@ public class Model implements DefaultRestActions {
 			@Override
 			public void onDone(HttpRestResponse response) {
 				// TODO Auto-generated method stub
-				Log.d("restful", "Response: " + response.getResponse());
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "Response: " + response.getResponse());
 
 				if (HttpHelper.isSuccessfulResponse(response)) {
-					Log.d("restful", "Request was successful!");
+					if (RestfulApplication.DEBUG)
+						Log.d("restful", "Request was successful!");
 					parseResponse(response, callback);
 				} else {
-					Log.d("restful", "Something happened with the request..");
-					Log.d("restful", "" + response.getStatusCode() + ": " + response.getStatusReason());
+					if (RestfulApplication.DEBUG) {
+						Log.d("restful", "Something happened with the request..");
+						Log.d("restful", "" + response.getStatusCode() + ": " + response.getStatusReason());
+					}
 					response = parseResponseError(response);
 					if (callback != null)
 						callback.onError(response);
@@ -124,7 +129,8 @@ public class Model implements DefaultRestActions {
 		// values with the response and head on out of here!
 
 		if (callback == null) {
-			Log.d("restful", "parseResponse: Callback was empty, trying to update model's values with response");
+			if (RestfulApplication.DEBUG)
+				Log.d("restful", "parseResponse: Callback was empty, trying to update model's values with response");
 
 			updateValues(response.getResponse());
 			return;
@@ -134,8 +140,9 @@ public class Model implements DefaultRestActions {
 		Type callbackType = CallbackHelper.getCallbackType(callback);
 
 		if (GenericHelper.isCollection(callbackType) || GenericHelper.isArray(callbackType)) {
-			Log.d("restful",
-					"parseResponse: Callback type was an array or a collection as return type, trying to parse");
+			if (RestfulApplication.DEBUG)
+				Log.d("restful",
+						"parseResponse: Callback type was an array or a collection as return type, trying to parse");
 
 			try {
 				T parsedObjects = JsonParser.parse(response.getResponse(), callback);
@@ -154,10 +161,12 @@ public class Model implements DefaultRestActions {
 		} else {
 			// If Callback is an object and can be cast to Model, try to
 			// update values
-			Log.d("restful", "parseResponse: Callback type: " + callbackType);
+			if (RestfulApplication.DEBUG)
+				Log.d("restful", "parseResponse: Callback type: " + callbackType);
 
 			if (((Class<?>) callbackType).isInstance(this)) {
-				Log.d("restful", "parseResponse: Callback type was a single entity, trying to update values");
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "parseResponse: Callback type was a single entity, trying to update values");
 				updateValues(response.getResponse());
 
 				callback.onSuccess((T) this);

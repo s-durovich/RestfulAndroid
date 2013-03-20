@@ -7,6 +7,8 @@ public class RestfulApplication extends Application{
 
 	private static RestfulApplication application = null;
 	
+	public static boolean DEBUG = false;
+	
 	private Context mContext;
 	
 	private RestfulApplication() {

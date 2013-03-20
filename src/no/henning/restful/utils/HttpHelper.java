@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.annotation.BasicAuthenticateWith;
 import no.henning.restful.auth.BasicAuthentication;
 import no.henning.restful.http.builder.RestHttpRequestDetail;
@@ -147,8 +148,8 @@ public class HttpHelper {
 
 		if (basicAuthentication == null)
 			return null;
-
-		Log.d("restful", "getBasicAuthenticationFromModel: Getting Auth string");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getBasicAuthenticationFromModel: Getting Auth string");
 		return getBasicAuthenticationFromAuthenticationClass(basicAuthentication);
 	}
 

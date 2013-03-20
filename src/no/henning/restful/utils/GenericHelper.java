@@ -16,6 +16,7 @@ import android.os.Build;
 import android.util.Log;
 
 import no.henning.restful.R;
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.callback.Callback;
 import no.henning.restful.converter.json.utils.TypeReference;
 import no.henning.restful.model.Model;
@@ -26,7 +27,7 @@ import no.henning.restful.service.annotation.Url;
 
 public class GenericHelper {
 
-	public static final String APP_VERSION_NAME = "0.6";
+	public static final String APP_VERSION_NAME = "0.11";
 
 	/**
 	 * GET REST SERVICE
@@ -35,18 +36,18 @@ public class GenericHelper {
 	public static Class<? extends RestService> getRestServiceFromModel(Class<? extends Model> model) {
 		if (model == null)
 			return null;
-
-		Log.d("restful", "getRestServiceFromModel: Trying to retrieve what RestService " + model.getSimpleName()
-				+ " uses...");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getRestServiceFromModel: Trying to retrieve what RestService " + model.getSimpleName()
+					+ " uses...");
 		// Tries to retrieve the annotation that specifies a rest service from a
 		// model
 		UsesRestService annotation = model.getAnnotation(UsesRestService.class);
 
 		if (annotation == null)
 			return null;
-
-		Log.d("restful", "getRestServiceFromModel: " + model.getSimpleName() + " uses "
-				+ annotation.value().getSimpleName());
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getRestServiceFromModel: " + model.getSimpleName() + " uses "
+					+ annotation.value().getSimpleName());
 
 		return annotation.value();
 	}
@@ -54,9 +55,9 @@ public class GenericHelper {
 	public static Class<? extends RestService> getRestServiceFromProxyMethod(Method method) {
 		if (method == null)
 			return null;
-
-		Log.d("restful", "getRestServiceFromProxyMethod: Trying to retrieve what RestService "
-				+ method.getDeclaringClass().getSimpleName() + " uses");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getRestServiceFromProxyMethod: Trying to retrieve what RestService "
+					+ method.getDeclaringClass().getSimpleName() + " uses");
 
 		Class<? extends Model> model = getModelFromProxyMethod(method);
 
@@ -66,9 +67,9 @@ public class GenericHelper {
 	public static Class<? extends Model> getModelFromProxyMethod(Method method) {
 		if (method == null)
 			return null;
-
-		Log.d("restful", "getModelFromProxyMethod: Trying to find what model "
-				+ method.getDeclaringClass().getSimpleName() + " belongs to");
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getModelFromProxyMethod: Trying to find what model "
+					+ method.getDeclaringClass().getSimpleName() + " belongs to");
 
 		// A action interface should implement a BelongsTo annotation so we can
 		// process requests properly.
@@ -76,8 +77,8 @@ public class GenericHelper {
 
 		if (annotation == null)
 			return null;
-
-		Log.d("restful", "getModelFromProxyMethod: Belongs to " + annotation.value().getSimpleName());
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "getModelFromProxyMethod: Belongs to " + annotation.value().getSimpleName());
 
 		return annotation.value();
 	}
@@ -154,15 +155,18 @@ public class GenericHelper {
 	}
 
 	public static boolean isCollection(Type type) {
-		Log.d("restful", "isCollection: Checking " + type);
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "isCollection: Checking " + type);
 
 		try {
 			if (Class.forName("java.lang.Class") == type.getClass()) {
-				Log.d("restful", "isCollection: Is not a special case, forwarding check..");
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "isCollection: Is not a special case, forwarding check..");
 
 				return isCollection((Class<?>) type);
 			} else if (Class.forName("org.apache.harmony.luni.lang.reflect.ImplForArray") == type.getClass()) {
-				Log.d("restful", "isCollection: Is not collection, but an array!");
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "isCollection: Is not collection, but an array!");
 
 				return false;
 			}
@@ -172,10 +176,10 @@ public class GenericHelper {
 		}
 
 		ParameterizedType pType = (ParameterizedType) type;
-
-		Log.d("restful", "isCollection: Type is " + (Class<?>) pType.getRawType());
-		Log.d("restful", "isCollection: Type is " + (Class<?>) pType.getActualTypeArguments()[0]);
-
+		if (RestfulApplication.DEBUG) {
+			Log.d("restful", "isCollection: Type is " + (Class<?>) pType.getRawType());
+			Log.d("restful", "isCollection: Type is " + (Class<?>) pType.getActualTypeArguments()[0]);
+		}
 		return isCollection((Class<?>) pType.getRawType());
 	}
 
@@ -189,15 +193,18 @@ public class GenericHelper {
 	}
 
 	public static boolean isArray(Type type) {
-		Log.d("restful", "isArray: Checking " + type);
+		if (RestfulApplication.DEBUG)
+			Log.d("restful", "isArray: Checking " + type);
 
 		try {
 			if (Class.forName("java.lang.Class") == type.getClass()) {
-				Log.d("restful", "isArray: Is not a special case, forwarding check..");
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "isArray: Is not a special case, forwarding check..");
 
 				return isArray((Class<?>) type);
 			} else if (Class.forName("org.apache.harmony.luni.lang.reflect.ImplForType") == type.getClass()) {
-				Log.d("restful", "isArray: Is not array, could be a collection or simple object!");
+				if (RestfulApplication.DEBUG)
+					Log.d("restful", "isArray: Is not array, could be a collection or simple object!");
 
 				return false;
 			}
@@ -207,10 +214,10 @@ public class GenericHelper {
 		}
 
 		GenericArrayType pType = (GenericArrayType) type;
-
-		Log.d("restful", "isArray: Type is " + (Class<?>) pType.getClass());
-		Log.d("restful", "isArray: Type is " + (Class<?>) pType.getGenericComponentType());
-
+		if (RestfulApplication.DEBUG) {
+			Log.d("restful", "isArray: Type is " + (Class<?>) pType.getClass());
+			Log.d("restful", "isArray: Type is " + (Class<?>) pType.getGenericComponentType());
+		}
 		return true;
 	}
 

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import no.henning.restful.RestfulApplication;
 import no.henning.restful.converter.json.JsonParser;
 import no.henning.restful.model.annotation.Ignore;
 import no.henning.restful.model.annotation.Named;
@@ -52,15 +53,15 @@ public class JsonParserUtil
 		Class<?> fieldClass = field.getType();
 		
 		if (fieldClass.isInstance(value))
-		{
+		{if (RestfulApplication.DEBUG)
 			Log.d("restful", "castJsonValue: Field can be cast directly!");
 			field.set(object, fieldClass.cast(value));
 		}
 		else if (isNumber(fieldClass))
-		{
+		{if (RestfulApplication.DEBUG)
 			Log.d("restful", "castJsonValue: Field is a type of Number..");
 			Object newValue = JsonCasting.getAsNumber(fieldClass, value);
-			
+			if (RestfulApplication.DEBUG)
 			Log.d("restful", "castJsonValue: Number value: " + newValue);
 			field.set(object, newValue);
 		}
