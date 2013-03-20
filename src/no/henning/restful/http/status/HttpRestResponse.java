@@ -11,6 +11,10 @@ public class HttpRestResponse {
 		this.response = response;
 	}
 
+	public static HttpRestResponse newBadConnectionResponse() {
+		return new HttpRestResponse(666, "Bad connection", "BAD CONNECTION!!! STUB in HtttRestResponse.java");
+	}
+
 	public int getStatusCode() {
 		return statusCode;
 	}

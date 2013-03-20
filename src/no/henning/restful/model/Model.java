@@ -106,16 +106,20 @@ public class Model implements DefaultRestActions {
 				if (RestfulApplication.DEBUG)
 					Log.d("restful", "Response: " + response.getResponse());
 
-				if (HttpHelper.isSuccessfulResponse(response)) {
+				if (response != null && HttpHelper.isSuccessfulResponse(response)) {
 					if (RestfulApplication.DEBUG)
 						Log.d("restful", "Request was successful!");
 					parseResponse(response, callback);
 				} else {
-					if (RestfulApplication.DEBUG) {
-						Log.d("restful", "Something happened with the request..");
-						Log.d("restful", "" + response.getStatusCode() + ": " + response.getStatusReason());
+					if (response != null) {
+						if (RestfulApplication.DEBUG) {
+							Log.d("restful", "Something happened with the request..");
+							Log.d("restful", "" + response.getStatusCode() + ": " + response.getStatusReason());
+						}
+						response = parseResponseError(response);
+					} else {
+						response = HttpRestResponse.newBadConnectionResponse();
 					}
-					response = parseResponseError(response);
 					if (callback != null)
 						callback.onError(response);
 				}
