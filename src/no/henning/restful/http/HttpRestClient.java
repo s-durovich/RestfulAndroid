@@ -16,12 +16,16 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class HttpRestClient extends AsyncTask<HttpUriRequest, Void, HttpRestResponse> {
+
+	private final int CONNECTION_TIMEOUT = 10000;
+	private final int SOCKET_TIMEOUT = 10000;
 
 	private DefaultHttpClient client;
 
@@ -29,9 +33,11 @@ public class HttpRestClient extends AsyncTask<HttpUriRequest, Void, HttpRestResp
 
 	public HttpRestClient(HttpRestClientResponseCallback callback) {
 		this.callback = callback;
-		BasicHttpParams params = new BasicHttpParams();
+		HttpParams params = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 		SchemeRegistry schemeRegistry = new SchemeRegistry();
-		//schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		// schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
 		final SSLSocketFactory sslSocketFactory = SSLSocketFactory.getSocketFactory();
 		schemeRegistry.register(new Scheme("https", sslSocketFactory, 443));
 		ClientConnectionManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);

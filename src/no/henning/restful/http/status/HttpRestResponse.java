@@ -1,6 +1,12 @@
 package no.henning.restful.http.status;
 
 public class HttpRestResponse {
+
+	// constants
+	private final static int badStatusCode = 666;
+	private final static String badStatusReason = "Server isn't available";
+	private final static String badStatusResponse = "Could not connect to the server";
+
 	private final int statusCode;
 	private final String statusReason;
 	private final String response;
@@ -12,7 +18,7 @@ public class HttpRestResponse {
 	}
 
 	public static HttpRestResponse newBadConnectionResponse() {
-		return new HttpRestResponse(666, "Bad connection", "BAD CONNECTION!!! STUB in HtttRestResponse.java");
+		return new HttpRestResponse(badStatusCode, badStatusReason, badStatusResponse);
 	}
 
 	public int getStatusCode() {
