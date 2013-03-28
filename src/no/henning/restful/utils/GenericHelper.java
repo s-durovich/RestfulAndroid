@@ -27,12 +27,11 @@ import no.henning.restful.service.annotation.Url;
 
 public class GenericHelper {
 
-	public static final String APP_VERSION_NAME = "0.11";
+	public static final String APP_VERSION_NAME = "0.15";
 
 	/**
 	 * GET REST SERVICE
 	 */
-
 	public static Class<? extends RestService> getRestServiceFromModel(Class<? extends Model> model) {
 		if (model == null)
 			return null;
