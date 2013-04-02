@@ -1,4 +1,4 @@
-package no.henning.restful.auth;
+package no.henning.restful.credential;
 
 import android.util.Base64;
 

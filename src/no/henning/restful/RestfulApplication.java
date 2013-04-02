@@ -1,22 +1,18 @@
 package no.henning.restful;
 
 import android.app.Application;
-import android.content.Context;
 
-public class RestfulApplication extends Application{
+public class RestfulApplication extends Application {
 
 	private static RestfulApplication application = null;
-	
+
 	public static boolean DEBUG = false;
-	
-	private Context mContext;
-	
-	private RestfulApplication() {
-		//mContext = getApplicationContext();
+
+	public RestfulApplication() {
 	}
-	
-	public static RestfulApplication getInstate(){
-		if(application == null)
+
+	public static RestfulApplication getInstate() {
+		if (application == null)
 			application = new RestfulApplication();
 		return application;
 	}

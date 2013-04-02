@@ -8,7 +8,7 @@ import java.net.URL;
 
 import no.henning.restful.RestfulApplication;
 import no.henning.restful.annotation.BasicAuthenticateWith;
-import no.henning.restful.auth.BasicAuthentication;
+import no.henning.restful.credential.BasicAuthentication;
 import no.henning.restful.http.builder.RestHttpRequestDetail;
 import no.henning.restful.http.method.HttpDelete;
 import no.henning.restful.http.status.HttpRestResponse;

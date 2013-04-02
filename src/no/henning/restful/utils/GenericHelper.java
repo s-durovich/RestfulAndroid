@@ -7,17 +7,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
 import android.util.Log;
 
-import no.henning.restful.R;
 import no.henning.restful.RestfulApplication;
-import no.henning.restful.callback.Callback;
 import no.henning.restful.converter.json.utils.TypeReference;
 import no.henning.restful.model.Model;
 import no.henning.restful.model.annotation.BelongsTo;
@@ -26,8 +18,6 @@ import no.henning.restful.service.RestService;
 import no.henning.restful.service.annotation.Url;
 
 public class GenericHelper {
-
-	public static final String APP_VERSION_NAME = "0.15";
 
 	/**
 	 * GET REST SERVICE
@@ -226,39 +216,5 @@ public class GenericHelper {
 		Type genericType = GenericHelper.getUnderlyingGenericType((ParameterizedType) types[0]);
 
 		return genericType;
-	}
-
-	public static String getUserAgentString() {
-		StringBuilder userAgentBuilder = new StringBuilder();
-		userAgentBuilder.append("Android/");
-		userAgentBuilder.append(APP_VERSION_NAME);
-		userAgentBuilder.append(" (Android ");
-		userAgentBuilder.append(Build.VERSION.RELEASE);
-		userAgentBuilder.append(", ");
-		userAgentBuilder.append(getDeviceName());
-		userAgentBuilder.append(")");
-		return userAgentBuilder.toString();
-	}
-
-	public static String getDeviceName() {
-		String manufacturer = Build.MANUFACTURER;
-		String model = Build.MODEL;
-		if (model.startsWith(manufacturer)) {
-			return capitalize(model);
-		} else {
-			return capitalize(manufacturer) + " " + model;
-		}
-	}
-
-	private static String capitalize(String s) {
-		if (s == null || s.length() == 0) {
-			return "";
-		}
-		char first = s.charAt(0);
-		if (Character.isUpperCase(first)) {
-			return s;
-		} else {
-			return Character.toUpperCase(first) + s.substring(1);
-		}
 	}
 }

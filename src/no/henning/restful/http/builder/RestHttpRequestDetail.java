@@ -19,8 +19,9 @@ import android.os.Build;
 import android.util.Log;
 
 import no.henning.restful.RestfulApplication;
-import no.henning.restful.auth.BasicAuthentication;
 import no.henning.restful.converter.json.JsonWriter;
+import no.henning.restful.credential.BasicAuthentication;
+import no.henning.restful.credential.RestUserAgent;
 import no.henning.restful.model.Model;
 import no.henning.restful.service.RestService;
 import no.henning.restful.utils.GenericHelper;
@@ -90,7 +91,7 @@ public class RestHttpRequestDetail {
 	 * @param request
 	 */
 	private void addRestHeaders(HttpUriRequest request) {
-		request.setHeader("User-Agent", GenericHelper.getUserAgentString());
+		request.setHeader("User-Agent", RestUserAgent.getUserAgentString());
 
 		if (isNotGetOrDeleteRequest())
 			request.setHeader("Content-Type", "application/json");
