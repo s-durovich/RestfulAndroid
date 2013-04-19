@@ -4,16 +4,36 @@ import android.app.Application;
 
 public class RestfulApplication extends Application {
 
-	private static RestfulApplication application = null;
+	public static final boolean DEBUG = false;
 
-	public static boolean DEBUG = false;
+	private static RestfulApplication instance;
 
-	public RestfulApplication() {
+	private String username;
+	private String password;
+
+	public static synchronized RestfulApplication getInstate() {
+		return instance;
 	}
 
-	public static RestfulApplication getInstate() {
-		if (application == null)
-			application = new RestfulApplication();
-		return application;
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		instance = this;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
